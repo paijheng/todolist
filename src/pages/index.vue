@@ -15,8 +15,8 @@ const {
 
 const newTodo = ref('')
 
-function submit() {
-  addTodo(newTodo.value)
+async function submit() {
+  await addTodo(newTodo.value)
   newTodo.value = ''
 }
 

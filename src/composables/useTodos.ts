@@ -8,37 +8,47 @@ export interface Todo {
 export type TodoFilter = 'all' | 'active' | 'completed'
 
 export function useTodos() {
-  // Shared, SSR-friendly state across components
-  const todos = useState<Todo[]>('todos', () => [])
   const filter = useState<TodoFilter>('todos-filter', () => 'all')
 
-  const addTodo = (title: string) => {
+  const { data: todos, refresh } = useFetch<Todo[]>('/api/todos', { default: () => [] })
+
+  const addTodo = async (title: string) => {
     const trimmed = title.trim()
     if (!trimmed) return
-    todos.value.unshift({
-      id: crypto.randomUUID(),
-      title: trimmed,
-      done: false,
-      createdAt: Date.now(),
+    const created = await $fetch<Todo>('/api/todos', {
+      method: 'POST',
+      body: { title: trimmed, completed: false },
     })
+    todos.value = [created, ...todos.value]
   }
 
-  const toggleTodo = (id: string) => {
+  const toggleTodo = async (id: string) => {
     const todo = todos.value.find((t) => t.id === id)
-    if (todo) todo.done = !todo.done
+    if (!todo) return
+    const updated = await $fetch<Todo>(`/api/todos/${id}`, {
+      method: 'PATCH',
+      body: { completed: !todo.done },
+    })
+    todos.value = todos.value.map((t) => (t.id === id ? updated : t))
   }
 
-  const updateTodo = (id: string, title: string) => {
+  const updateTodo = async (id: string, title: string) => {
     const trimmed = title.trim()
-    const todo = todos.value.find((t) => t.id === id)
-    if (todo && trimmed) todo.title = trimmed
+    if (!trimmed) return
+    const updated = await $fetch<Todo>(`/api/todos/${id}`, {
+      method: 'PATCH',
+      body: { title: trimmed },
+    })
+    todos.value = todos.value.map((t) => (t.id === id ? updated : t))
   }
 
-  const removeTodo = (id: string) => {
+  const removeTodo = async (id: string) => {
+    await $fetch(`/api/todos/${id}`, { method: 'DELETE' })
     todos.value = todos.value.filter((t) => t.id !== id)
   }
 
-  const clearCompleted = () => {
+  const clearCompleted = async () => {
+    await $fetch('/api/todos/completed', { method: 'DELETE' })
     todos.value = todos.value.filter((t) => !t.done)
   }
 
@@ -67,5 +77,6 @@ export function useTodos() {
     updateTodo,
     removeTodo,
     clearCompleted,
+    refresh,
   }
 }
