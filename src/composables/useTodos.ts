@@ -7,10 +7,10 @@ export interface Todo {
 
 export type TodoFilter = 'all' | 'active' | 'completed'
 
-export function useTodos() {
+export async function useTodos() {
   const filter = useState<TodoFilter>('todos-filter', () => 'all')
 
-  const { data: todos, refresh } = useFetch<Todo[]>('/api/todos', { default: () => [] })
+  const { data: todos, refresh } = await useFetch<Todo[]>('/api/todos', { default: () => [] })
 
   const addTodo = async (title: string) => {
     const trimmed = title.trim()

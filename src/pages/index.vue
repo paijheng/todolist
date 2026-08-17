@@ -9,7 +9,7 @@ const {
   updateTodo,
   removeTodo,
   clearCompleted,
-} = useTodos()
+} = await useTodos()
 
 const newTodo = ref('')
 
