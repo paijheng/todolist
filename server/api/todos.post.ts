@@ -1,5 +1,3 @@
-import { sql, toTodo } from '~~/server/utils/db';
-
 export default defineEventHandler(async (event) => {
   const body = await readBody<{ title?: string; completed?: boolean }>(event);
   const title = body.title?.trim();

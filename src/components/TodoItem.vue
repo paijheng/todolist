@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Todo } from '~/composables/useTodos'
-
 const props = defineProps<{ todo: Todo }>()
 const emit = defineEmits<{
   toggle: [id: string]

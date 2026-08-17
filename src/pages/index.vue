@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useTodos, type TodoFilter } from '~/composables/useTodos'
-
 const {
   filter,
   filteredTodos,

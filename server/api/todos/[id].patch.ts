@@ -1,5 +1,3 @@
-import { sql, toTodo } from '~~/server/utils/db';
-
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id');
   if (!Number.isInteger(Number(id))) {
