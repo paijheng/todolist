@@ -38,9 +38,9 @@ function cancel() {
     class="group flex items-center gap-3 rounded-lg border border-default bg-default px-3 py-2.5 transition-colors hover:bg-elevated/50"
   >
     <UCheckbox
+      :aria-label="`Mark ${todo.title} as ${todo.done ? 'active' : 'complete'}`"
       :model-value="todo.done"
       @update:model-value="emit('toggle', todo.id)"
-      :aria-label="`Mark ${todo.title} as ${todo.done ? 'active' : 'complete'}`"
     />
 
     <UInput

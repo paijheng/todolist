@@ -3,5 +3,5 @@ export default defineEventHandler(async () => {
     WITH deleted AS (DELETE FROM todos WHERE completed = true RETURNING id)
     SELECT count(*)::int AS deleted FROM deleted
   `;
-  return { deleted: (row as any).deleted };
+  return { deleted: (row as { deleted: number }).deleted };
 });
