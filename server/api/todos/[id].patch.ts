@@ -19,5 +19,5 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Todo not found' });
   }
 
-  return toTodo(row as any);
+  return toTodo(row as TodoRow);
 });

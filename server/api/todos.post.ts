@@ -6,5 +6,5 @@ export default defineEventHandler(async (event) => {
   }
 
   const [row] = await sql`INSERT INTO todos (title, completed) VALUES (${title}, ${body.completed ?? false}) RETURNING *`;
-  return toTodo(row as any);
+  return toTodo(row as TodoRow);
 });
